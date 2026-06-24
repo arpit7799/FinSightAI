@@ -38,3 +38,28 @@ uploads/
 # Build
 dist/
 build/
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+FinSightAI_venv/
+OCR_venv/
+
+# Archives
+*.zip
+
+# Models
+*.pkl
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
