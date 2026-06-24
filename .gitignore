@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual Environment
+FinSightAI_venv/
+venv/
+
+FinSightAI_venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+.pytest_cache/
+
+# Environment
+.env
+
+# Mac
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Logs
+*.log
+
+# Uploads
+uploads/
+
+# Alembic cache
+.alembic
+
+# Pytest
+.pytest_cache/
+
+# Build
+dist/
+build/
