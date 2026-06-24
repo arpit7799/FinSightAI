@@ -1,65 +1,90 @@
+# =========================
 # Python
+# =========================
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
 
-# Virtual Environment
-FinSightAI_venv/
-venv/
-
-FinSightAI_venv/
-__pycache__/
-*.pyc
-.env
-.DS_Store
-.pytest_cache/
-
-# Environment
-.env
-
-# Mac
-.DS_Store
-
-# VSCode
-.vscode/
-
-# Logs
-*.log
-
-# Uploads
-uploads/
-
-# Alembic cache
-.alembic
-
-# Pytest
-.pytest_cache/
-
-# Build
-dist/
-build/
-
-# Python
-__pycache__/
-*.pyc
-
-# Virtual environments
+# =========================
+# Virtual Environments
+# =========================
 venv/
 .venv/
 FinSightAI_venv/
 OCR_venv/
 
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Testing
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# IDEs
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Build / Distribution
+# =========================
+build/
+dist/
+*.egg-info/
+
+# =========================
+# Uploads & Storage
+# =========================
+uploads/
+storage/
+
+# =========================
 # Archives
+# =========================
 *.zip
+*.tar.gz
 
-# Models
+# =========================
+# ML / AI Models
+# =========================
 *.pkl
+*.pt
+*.pth
+*.onnx
+*.bin
+*.ckpt
 
-# Notebook checkpoints
+# =========================
+# Jupyter
+# =========================
 .ipynb_checkpoints/
 
-# Environment variables
-.env
+# =========================
+# Alembic
+# =========================
+alembic/versions/__pycache__/
 
-# macOS
-.DS_Store
+# =========================
+# Misc
+# =========================
+tmp/
+temp/
