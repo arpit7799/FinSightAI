@@ -89,6 +89,12 @@ class DocumentChunk(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         ),
     )
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        if self.is_embedded is None:
+            self.is_embedded = False
+
     def __repr__(self) -> str:
         return (
             f"<DocumentChunk id={self.id} filing_id={self.filing_id} "

@@ -136,6 +136,12 @@ class Filing(UUIDPrimaryKeyMixin, TimestampMixin, SoftDeleteMixin, Base):
         Index("idx_filings_created_at", "created_at"),
     )
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        if self.processing_status is None:
+            self.processing_status = ProcessingStatus.PENDING
+
     def __repr__(self) -> str:
         return (
             f"<Filing id={self.id} company_id={self.company_id} "

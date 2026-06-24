@@ -38,6 +38,7 @@ class ChatSession(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         ForeignKey("filings.id", ondelete="CASCADE"),
         nullable=False,
     )
+
     user_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("users.id", ondelete="CASCADE"),
@@ -45,20 +46,36 @@ class ChatSession(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     )
 
     # ── Session metadata ──────────────────────────────────────────────────
-    title: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    message_count: Mapped[int] = mapped_column(
-        Integer, nullable=False, default=0, server_default="0"
+    title: Mapped[str | None] = mapped_column(
+        String(500),
+        nullable=True,
     )
+
+    message_count: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default="0",
+    )
+
+    def __init__(self, **kwargs):
+        kwargs.setdefault("message_count", 0)
+        super().__init__(**kwargs)
 
     # ── Relationships ─────────────────────────────────────────────────────
     filing: Mapped["Filing"] = relationship(
-        "Filing", back_populates="chat_sessions"
+        "Filing",
+        back_populates="chat_sessions",
     )
+
     user: Mapped["User"] = relationship(
-        "User", back_populates="chat_sessions"
+        "User",
+        back_populates="chat_sessions",
     )
+
     messages: Mapped[list["ChatMessage"]] = relationship(
-        "ChatMessage", back_populates="session",
+        "ChatMessage",
+        back_populates="session",
         cascade="all, delete-orphan",
         order_by="ChatMessage.created_at",
     )
@@ -141,6 +158,7 @@ class ChatMessage(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         Index("idx_messages_session", "session_id", "created_at"),
         Index("idx_messages_role", "session_id", "role"),
     )
+
 
     def __repr__(self) -> str:
         return (
