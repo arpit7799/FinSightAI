@@ -36,11 +36,11 @@ class Settings(BaseSettings):
 
     # ── Ollama / Llama 3 ──────────────────────────────────────────────────
     OLLAMA_BASE_URL: str = "http://localhost:11434"
-    OLLAMA_MODEL: str = "llama3"
+    OLLAMA_MODEL: str = "gemma3:4b"
 
     # ── BGE Embeddings ────────────────────────────────────────────────────
-    EMBEDDING_MODEL: str = "BAAI/bge-large-en-v1.5"
-    EMBEDDING_DIMENSION: int = 1024
+    EMBEDDING_MODEL: str = "BAAI/bge-base-en-v1.5"
+    EMBEDDING_DIMENSION: int = 768
 
     # ── File Storage ──────────────────────────────────────────────────────
     UPLOAD_DIR: str = "../uploads"
