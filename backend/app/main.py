@@ -11,7 +11,8 @@ from app.api.v1.routes.auth import router as auth_router
 from app.api.v1.routes.documents import router as documents_router
 from app.api.v1.routes.analysis import router as analysis_router
 from app.api.v1.routes.rag import router as rag_router
-from app.api.v1.routes.risk import router as risk_router              # NEW
+from app.api.v1.routes.risk import router as risk_router
+from app.api.v1.routes.fraud import router as fraud_router           # NEW
 from app.core.exceptions import (
     FilingNotFound,
     ProcessingError,
@@ -83,7 +84,8 @@ app.include_router(auth_router, prefix="/api/v1")
 app.include_router(documents_router, prefix="/api/v1")
 app.include_router(analysis_router, prefix="/api/v1")
 app.include_router(rag_router, prefix="/api/v1")
-app.include_router(risk_router, prefix="/api/v1")                     # NEW
+app.include_router(risk_router, prefix="/api/v1")
+app.include_router(fraud_router, prefix="/api/v1")                   # NEW
 
 
 @app.get("/")
