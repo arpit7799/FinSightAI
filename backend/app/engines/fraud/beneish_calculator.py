@@ -50,8 +50,8 @@ BENEISH_COEFFICIENTS = {
     "sgi":       0.892,
     "depi":      0.115,
     "sgai":     -0.172,
-    "lvgi":      0.740,
-    "tata":     -0.327,
+    "lvgi":     -0.327,
+    "tata":      4.679,
 }
 
 # Red flag thresholds for each variable
