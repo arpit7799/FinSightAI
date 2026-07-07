@@ -77,3 +77,4 @@ def delete_report(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Report not found.",
         )
+    
