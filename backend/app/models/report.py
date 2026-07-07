@@ -50,3 +50,10 @@ class Report(Base):
     "Company",
     back_populates="reports",
     )
+
+    ocr_result = relationship(
+    "ExtractedText",
+    back_populates="report",
+    uselist=False,
+    cascade="all, delete-orphan",
+    )
