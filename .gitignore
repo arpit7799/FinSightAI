@@ -1,23 +1,118 @@
+# ==========================
 # Python
-backend/venv/
+# ==========================
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
 
-# Database
-backend/finsight.db
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+backend/venv/
+backend/.venv/
 
-# Environment
+# Python Environment
+.python-version
+
+# ==========================
+# Environment Variables
+# ==========================
+.env
+.env.*
+!.env.example
 backend/.env
 
+# ==========================
+# Database
+# ==========================
+*.db
+*.sqlite3
+*.sqlite
+backend/finsight.db
+backend/finsight_ai.db
+
+# ==========================
+# Logs
+# ==========================
+*.log
+logs/
+*.out
+
+# ==========================
+# Test & Coverage
+# ==========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.cache/
+
+# ==========================
+# Type Checkers
+# ==========================
+.mypy_cache/
+.pyre/
+.ruff_cache/
+
+# ==========================
+# Jupyter
+# ==========================
+.ipynb_checkpoints/
+
+# ==========================
 # Node
+# ==========================
+node_modules/
 frontend/node_modules/
+
+# Package Managers
+.pnpm-store/
+.npm/
 
 # Build
 frontend/dist/
+dist/
+build/
 
-# OS
+# Vite
+.vite/
+
+# ==========================
+# IDE
+# ==========================
+.vscode/
+.idea/
+*.iml
+
+# ==========================
+# macOS
+# ==========================
 .DS_Store
-Thumbs.db
 
-# Logs
-*.log
+# Windows
+Thumbs.db
+Desktop.ini
+
+# ==========================
+# Misc
+# ==========================
+*.tmp
+*.temp
+
+# Datasets
+datasets/
+
+# Uploaded reports
+backend/uploads/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Trained model outputs (only if you decide not to track them)
+# trained_models/
+# backend/trained_models/

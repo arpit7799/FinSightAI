@@ -64,3 +64,17 @@ class Report(Base):
     uselist=False,
     cascade="all, delete-orphan",
     )
+
+    financial_data = relationship(
+    "FinancialData",
+    back_populates="report",
+    uselist=False,
+    cascade="all, delete-orphan",
+    )
+
+    financial_ratio = relationship(
+    "FinancialRatio",
+    back_populates="report",
+    uselist=False,
+    cascade="all, delete-orphan",
+    )

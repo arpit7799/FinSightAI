@@ -107,4 +107,11 @@ class ReportService:
         db.delete(report)
         db.commit()
 
+        try:
+            from sqlalchemy import text
+            db.execute(text("UPDATE sqlite_sequence SET seq = COALESCE((SELECT MAX(id) FROM reports), 0) WHERE name = 'reports'"))
+            db.commit()
+        except Exception:
+            pass
+
         return True
