@@ -98,3 +98,4 @@ class CompanyService:
         db.commit()
 
         return True
+    
