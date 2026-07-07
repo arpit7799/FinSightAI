@@ -80,7 +80,11 @@ class ReportService:
             .filter(Report.id == report_id)
             .first()
         )
-
+    
+    @staticmethod
+    def get_file_path(report):
+        return Path("uploads/reports") / report.stored_filename
+    
     @staticmethod
     def delete(
         db: Session,

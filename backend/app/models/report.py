@@ -57,3 +57,10 @@ class Report(Base):
     uselist=False,
     cascade="all, delete-orphan",
     )
+
+    nlp_result = relationship(
+    "NLPAnalysis",
+    back_populates="report",
+    uselist=False,
+    cascade="all, delete-orphan",
+    )
