@@ -4,6 +4,7 @@ from sqlalchemy import Column, DateTime, Integer, String
 
 from app.core.database import Base
 
+from sqlalchemy.orm import relationship
 
 class Company(Base):
     __tablename__ = "companies"
@@ -58,4 +59,10 @@ class Company(Base):
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
         nullable=False,
+    )
+
+    reports = relationship(
+    "Report",
+    back_populates="company",
+    cascade="all, delete-orphan",
     )

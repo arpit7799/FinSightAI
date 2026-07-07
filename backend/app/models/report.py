@@ -7,7 +7,7 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 
 from app.core.database import Base
-
+from sqlalchemy.orm import relationship
 
 class Report(Base):
     __tablename__ = "reports"
@@ -44,4 +44,9 @@ class Report(Base):
     upload_date = Column(
         DateTime,
         default=datetime.utcnow,
+    )
+
+    company = relationship(
+    "Company",
+    back_populates="reports",
     )
