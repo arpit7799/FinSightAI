@@ -51,12 +51,9 @@ class CompanyService:
         if existing_company:
             return None
 
-        new_company = Company(
-            company_name=company.company_name,
-            ticker_symbol=company.ticker_symbol,
-            industry=company.industry,
-            country=company.country,
-        )
+        company_data = company.model_dump(mode="json")
+
+        new_company = Company(**company_data)
 
         db.add(new_company)
         db.commit()
@@ -71,12 +68,18 @@ class CompanyService:
         company_data: CompanyUpdate,
     ):
 
-        company = CompanyService.get_by_id(db, company_id)
+        company = CompanyService.get_by_id(
+            db,
+            company_id,
+        )
 
         if not company:
             return None
 
-        update_data = company_data.model_dump(exclude_unset=True)
+        update_data = company_data.model_dump(
+            exclude_unset=True,
+            mode="json",
+        )
 
         for field, value in update_data.items():
             setattr(company, field, value)
@@ -89,7 +92,10 @@ class CompanyService:
     @staticmethod
     def delete(db: Session, company_id: int):
 
-        company = CompanyService.get_by_id(db, company_id)
+        company = CompanyService.get_by_id(
+            db,
+            company_id,
+        )
 
         if not company:
             return False
@@ -98,4 +104,3 @@ class CompanyService:
         db.commit()
 
         return True
-    
