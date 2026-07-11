@@ -60,6 +60,10 @@ export const reportService = {
   
   getHealth: async () => {
     return api.get('/health/');
+  },
+
+  getStockData: async (ticker: string) => {
+    return api.get(`/stock-data/${ticker}`);
   }
 };
 

@@ -8,6 +8,7 @@ from app.api.ml.risk import router as risk_router
 from app.api.ml.fraud import router as fraud_router
 from app.api.ml.forecast import router as forecast_router
 from app.api.analysis import router as analysis_router
+from app.api.stock_data import router as stock_data_router
 
 from app.api.router import api_router
 from app.config import settings
@@ -44,6 +45,7 @@ app.include_router(risk_router)
 app.include_router(fraud_router)
 app.include_router(forecast_router)
 app.include_router(analysis_router)
+app.include_router(stock_data_router)
 
 @app.get("/")
 def root():

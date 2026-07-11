@@ -27,11 +27,21 @@ def forecast(request: ForecastRequest):
         ]
     )
 
+    # generate the forecast
     result = ForecastPredictor.predict(
         history,
         request.days,
     )
 
+    # run walk-forward backtest so we can report real accuracy metrics
+    # (only if we have enough data — backtest handles the edge case internally)
+    metrics = ForecastPredictor.backtest(
+        history,
+        horizon=request.days,
+        n_folds=3,
+    )
+
     return {
-        "forecast": result
+        "forecast": result,
+        "backtest_metrics": metrics,
     }

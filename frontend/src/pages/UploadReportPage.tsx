@@ -115,13 +115,22 @@ export default function UploadReportPage() {
       const ocrText = res.data.extracted_text;
       const textPayload = typeof ocrText === 'string' && ocrText.length > 0 ? ocrText : "Normal financial operations with stable growth.";
 
-      const forecastPayload = [
-        { Date: "2024-01-01", Close: 150.0 },
-        { Date: "2024-02-01", Close: 155.0 },
-        { Date: "2024-03-01", Close: 160.0 },
-        { Date: "2024-04-01", Close: 158.0 },
-        { Date: "2024-05-01", Close: 165.0 },
-      ];
+      // fetch real stock history from the backend csv files
+      // (falls back to a tiny dummy if the fetch fails — better than crashing)
+      let forecastPayload: any[] = [];
+      try {
+        const stockRes = await reportService.getStockData("combined");
+        forecastPayload = stockRes.data.history;
+      } catch (e) {
+        console.warn("Could not load stock data, using fallback", e);
+        forecastPayload = [
+          { Date: "2024-01-01", Close: 150.0 },
+          { Date: "2024-02-01", Close: 155.0 },
+          { Date: "2024-03-01", Close: 160.0 },
+          { Date: "2024-04-01", Close: 158.0 },
+          { Date: "2024-05-01", Close: 165.0 },
+        ];
+      }
 
       // Run ML models in parallel to minimize wait time
       const [riskRes, fraudRes, forecastRes] = await Promise.allSettled([

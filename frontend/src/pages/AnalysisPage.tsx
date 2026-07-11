@@ -105,13 +105,22 @@ export default function AnalysisPage() {
         } catch(e) { console.error("Fraud ML error", e); }
 
         try {
-          const forecastRes = await reportService.predictForecast([
-            { Date: "2024-01-01", Close: 150.0 },
-            { Date: "2024-02-01", Close: 155.0 },
-            { Date: "2024-03-01", Close: 160.0 },
-            { Date: "2024-04-01", Close: 158.0 },
-            { Date: "2024-05-01", Close: 165.0 },
-          ], 30);
+          // fetch real stock history instead of hardcoded 5 fake points
+          let stockHistory: any[] = [];
+          try {
+            const stockRes = await reportService.getStockData("combined");
+            stockHistory = stockRes.data.history;
+          } catch (e) {
+            console.warn("Could not load stock data, using fallback", e);
+            stockHistory = [
+              { Date: "2024-01-01", Close: 150.0 },
+              { Date: "2024-02-01", Close: 155.0 },
+              { Date: "2024-03-01", Close: 160.0 },
+              { Date: "2024-04-01", Close: 158.0 },
+              { Date: "2024-05-01", Close: 165.0 },
+            ];
+          }
+          const forecastRes = await reportService.predictForecast(stockHistory, 30);
           setForecastData(forecastRes.data);
           } catch(e) { console.error("Forecast ML error", e); }
         }
@@ -392,21 +401,34 @@ export default function AnalysisPage() {
                   <CardTitle className="text-lg flex items-center gap-2"><Target className="w-4 h-4 text-purple-500" /> Forecast Confidence</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1"><span>Model Confidence</span><span className="text-purple-500">87%</span></div>
-                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden"><div className="bg-purple-500 h-full" style={{ width: '87%' }} /></div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1"><span>Historical Volatility</span><span className="text-amber-500">14%</span></div>
-                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden"><div className="bg-amber-500 h-full" style={{ width: '14%' }} /></div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1"><span>Mean Absolute Error</span><span className="text-emerald-500">2.4%</span></div>
-                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden"><div className="bg-emerald-500 h-full" style={{ width: '2.4%' }} /></div>
-                  </div>
-                  <div className="p-3 mt-4 rounded-lg bg-muted/20 border border-border/50">
-                    <p className="text-xs text-muted-foreground text-center">Prediction intervals represent 95% confidence bounds generated via Monte Carlo simulation on {data.original_filename}.</p>
-                  </div>
+                  {(() => {
+                    const bt = forecastData?.backtest_metrics;
+                    const maseVal = bt?.mase != null ? bt.mase : null;
+                    const mapeVal = bt?.mape != null ? bt.mape.toFixed(1) : null;
+                    const maeVal = bt?.mae != null ? `$${bt.mae.toFixed(2)}` : null;
+                    // MASE < 1 = better than naive, so we show (1 - mase) * 100 as a "skill" %
+                    const maseSkill = maseVal != null ? Math.max(0, Math.round((1 - maseVal) * 100)) : null;
+                    return (
+                      <>
+                        <div>
+                          <div className="flex justify-between text-sm mb-1"><span>MASE vs Naive</span><span className="text-purple-500">{maseVal != null ? maseVal.toFixed(2) : "N/A"}</span></div>
+                          <div className="h-2 w-full bg-muted rounded-full overflow-hidden"><div className={`h-full ${maseVal != null && maseVal < 1 ? 'bg-purple-500' : 'bg-red-500'}`} style={{ width: `${Math.min(Math.abs(maseSkill ?? 0), 100)}%` }} /></div>
+                          <p className="text-xs text-muted-foreground mt-1">{maseVal != null && maseVal < 1 ? "✓ Model beats naive baseline" : "Model comparable to naive"}</p>
+                        </div>
+                        <div>
+                          <div className="flex justify-between text-sm mb-1"><span>MAPE</span><span className="text-amber-500">{mapeVal != null ? `${mapeVal}%` : "N/A"}</span></div>
+                          <div className="h-2 w-full bg-muted rounded-full overflow-hidden"><div className="bg-amber-500 h-full" style={{ width: `${Math.min(Number(mapeVal ?? 0), 100)}%` }} /></div>
+                        </div>
+                        <div>
+                          <div className="flex justify-between text-sm mb-1"><span>Mean Absolute Error</span><span className="text-emerald-500">{maeVal ?? "N/A"}</span></div>
+                          <div className="h-2 w-full bg-muted rounded-full overflow-hidden"><div className="bg-emerald-500 h-full" style={{ width: `${Math.min(bt?.mae ?? 0, 100)}%` }} /></div>
+                        </div>
+                        <div className="p-3 mt-4 rounded-lg bg-muted/20 border border-border/50">
+                          <p className="text-xs text-muted-foreground text-center">Walk-forward backtest ({bt?.n_folds ?? 0} folds) on {data.original_filename}. Intervals are 95% confidence bounds.</p>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </CardContent>
               </Card>
 
